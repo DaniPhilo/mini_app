@@ -6,11 +6,53 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Mini App
     body 
+        h2 Upload product:
         form(action="/api" method="POST" enctype="multipart/form-data")
-            label(for="img") Upload profile picture
+
+            label(for="name") Name:
+            input(type="text" name="name" required)
+
+            label(for="price") Price:
+            input(type="text" name="price" required)
+
+            label(for="description") Description:
+            input(type="text" name="description" required)
+            
+            label(for="img") Image:
             input(type="file" name="uploaded_file" required)
+
             input(type="submit" value="Upload")
 
         if response 
-            p #{response.message} 
-                a(href=`${response.url}`) #{response.url}
+            p #{response.message}
+
+        h2 Get product: 
+        form(action="/api/products" method="POST")
+            label(for="product-name")
+            input(type="text" name="product-name")
+
+            input(type="submit" value="Get Product")
+
+        form(action="/api/products" method="GET")
+            input(type="submit" value="Get All Products")
+
+        if error 
+            p #{error.message}
+        
+        if product 
+            div 
+                h3 #{product.name}
+                p #{product.price}
+                p #{product.description}
+                img(src=`${product.image}`)
+
+        if products 
+            each product in products 
+                div 
+                    h3 #{product.name}
+                    p #{product.price}
+                    p #{product.description}
+                    img(src=`${product.image}`)
+
+
+        
